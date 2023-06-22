@@ -24,14 +24,22 @@ class ViewController: UIViewController, UITableViewDataSource {
     // テーブルビューに表示するデータを返すメソッド（スクロールなどでページを更新する必要が出るたびに呼び出される）
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: "")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "prefecturesCell", for: indexPath)
+
         cell.textLabel?.text = prefecturesList[indexPath.row]
         cell.detailTextLabel?.text = String(indexPath.row + 1) + "番目の都道府県です"
 
         // ３行毎に背景職を変更設定
-        if indexPath.row % 3 == 0 { cell.contentView.backgroundColor = UIColor(red: 255, green: 0, blue: 0, alpha: 0.3) }
-        if indexPath.row % 3 == 1 { cell.contentView.backgroundColor = UIColor(red: 0, green: 255, blue: 0, alpha: 0.3) }
-        if indexPath.row % 3 == 2 { cell.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 255, alpha: 0.3) }
+        let color: UIColor
+        switch indexPath.row % 3 {
+        case 0:
+            color = .red
+        case 1:
+            color = .green
+        default:
+            color = .blue
+        }
+        cell.contentView.backgroundColor = color.withAlphaComponent(0.3)
 
         return cell
     }
@@ -41,10 +49,4 @@ class ViewController: UIViewController, UITableViewDataSource {
         //print(prefecturesList.count)
         return prefecturesList.count
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
 }
-
